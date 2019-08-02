@@ -1,0 +1,37 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "mn.itzone"
+    },
+    "jhipsterVersion": "6.0.1",
+    "applicationType": "monolith",
+    "baseName": "streamer",
+    "packageName": "mn.itzone",
+    "packageFolder": "mn/itzone",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "no",
+    "devDatabaseType": "no",
+    "prodDatabaseType": "no",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": true,
+    "jwtSecretKey": "ZDQ3MTYwZGY0ZTVlNzI4YmVhYmMxMDlkNzhjOWVjZmY2NGMxNDFmNThjODNmOGQyY2M5NzQ1M2I2OTcwZmZjM2Q4YWIyMGVmYjZlMzJmNjRmOWI4ZDI3ZGQyYWJmMTk3YTJmYzJlZTBkZTNlNWExMDg4OWI5ODkzNTgyM2Q5NTI=",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "testFrameworks": ["gatling", "protractor"],
+    "jhiPrefix": "app",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false
+  }
+}
