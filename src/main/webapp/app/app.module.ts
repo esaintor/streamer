@@ -19,6 +19,7 @@ import { StreamerEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { AppMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
+import { StreamComponent } from 'app/stream/stream.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,7 @@ import { AppMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
     StreamerEntityModule,
     StreamerAppRoutingModule
   ],
-  declarations: [AppMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
+  declarations: [AppMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, StreamComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

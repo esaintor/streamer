@@ -9,23 +9,33 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.CacheControl;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ApplicationProperties.class})
-public class StreamerApp implements InitializingBean {
+@Configuration
+public class StreamerApp implements InitializingBean, WebMvcConfigurer {
 
     private static final Logger log = LoggerFactory.getLogger(StreamerApp.class);
 
     private final Environment env;
+
+    @Value("${file.directory}")
+    String localDirectory = "/Users/sainturb/";
 
     public StreamerApp(Environment env) {
         this.env = env;
@@ -93,5 +103,11 @@ public class StreamerApp implements InitializingBean {
             serverPort,
             contextPath,
             env.getActiveProfiles());
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/file/d/**").addResourceLocations("file:" + localDirectory).setCacheControl(CacheControl.maxAge(3, TimeUnit.DAYS));
+        WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 }

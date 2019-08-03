@@ -4,13 +4,89 @@
     <base href="/" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>streamer</title>
+    <title>STREAMER</title>
     <meta name="description" content="Description for streamer">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="manifest" href="manifest.webapp" />
     <link rel="stylesheet" href="content/css/loading.css">
+    <style>
+        html, body, div {
+            background: black;
+            color: white;
+        }
+
+        .back-button {
+            display: block;
+            background: transparent;
+            font-size: 18px;
+            font-weight: 800;
+            text-shadow: 0 0 3px #000000, 0 0 5px #2b2b2b;
+            cursor: pointer;
+            padding: 16px;
+        }
+
+        .header-path {
+            font-size: 32px;
+            font-weight: 800;
+            padding: 16px;
+        }
+        .server-path {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .server-path li {
+            margin: 12px;
+            padding: 12px;
+            background: #2d2d2d;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .streamer-icon {
+            display: inline-block;
+            position: relative;
+            content: '';
+            width: 16px;
+            height: 16px;
+            margin: 0 4px;
+            top: 2px;
+        }
+
+        .button-icon {
+            display: inline-block;
+            position: relative;
+            content: '';
+            width: 22px;
+            height: 22px;
+            margin: 0 8px;
+            top: 2px;
+        }
+
+        .video-icon {
+            background-image: url("./content/images/video-camera.svg");
+            background-repeat: no-repeat;
+            background-size: 100%;
+            cursor: pointer;
+        }
+
+        .play-next {
+            background-image: url("./content/images/play-next-button.svg");
+            background-repeat: no-repeat;
+            background-size: 100%;
+            cursor: pointer;
+            float: right;
+        }
+
+        .go-back {
+            background-image: url("./content/images/reply.svg");
+            background-repeat: no-repeat;
+            background-size: 100%;
+            cursor: pointer;
+            float: left;
+        }
+    </style>
     <!-- jhipster-needle-add-resources-to-root - JHipster will add new resources here -->
 </head>
 <body>

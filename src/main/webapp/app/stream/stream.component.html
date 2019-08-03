@@ -1,0 +1,10 @@
+<video id="streamer" width="100%" height="100%" controls autoplay>
+    <source [src]="'/file/d' + path" type="video/mp4">
+    Your browser does not support HTML5 video.
+</video>
+
+<div class="back-button" >
+    <a (click)="getBack(path)"><span class="button-icon go-back"></span>Go back</a>
+<!--    <a>({{name}})</a>-->
+    <a (click)="getNext()"  class="button-icon play-next"></a>
+</div>
