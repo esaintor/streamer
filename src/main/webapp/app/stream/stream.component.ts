@@ -124,4 +124,9 @@ export class StreamComponent implements OnInit {
       this.getBack(this.path);
     }
   }
+
+  getSubtitle() {
+    console.log('/file/d' + this.getPath(this.path) + '/' + this.name.split('.')[0] + '.srt');
+    return '/file/d' + this.getPath(this.path) + '/' + this.name.split('.')[0] + '.srt';
+  }
 }
