@@ -131,9 +131,9 @@ export class StreamComponent implements OnInit {
 
   getSubtitle() {
     this.srt = '/file/d' + this.getPath(this.path) + '/' + this.name.split('.')[0] + '.srt';
-    const video = document.getElementById('streamer') as HTMLVideoElement; // Main video element
-    video.textTracks[0].mode = 'showing'; // Start showing subtitle to your track
-    video.play();
+    // const video = document.getElementById('streamer') as HTMLVideoElement; // Main video element
+    // video.textTracks[0].mode = 'showing'; // Start showing subtitle to your track
+    // video.play();
   }
 
   saveToStorage() {
