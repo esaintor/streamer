@@ -11,13 +11,12 @@
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="manifest" href="manifest.webapp" />
     <link rel="stylesheet" href="content/css/loading.css">
-    <script src="./content/js/videosub.js"></script>
+    <script src="/content/js/videosub.js"></script>
     <style>
         html, body, div {
             background: black;
             color: white;
         }
-
         .back-button {
             display: block;
             background: transparent;
@@ -43,6 +42,7 @@
             background: #2d2d2d;
             border-radius: 8px;
             width: fit-content;
+            cursor: pointer;
         }
 
         .streamer-icon {
@@ -86,26 +86,6 @@
             background-size: 100%;
             cursor: pointer;
             float: left;
-        }
-        .videosubbar {
-            position: absolute;
-            bottom: 1em;
-            left: 0;
-            right: 0;
-            text-align: center;
-            background-color: transparent; /* rgba(0, 0, 0, 0.125); */
-            color: #ffffff;
-            font-family: Helvetica, Arial, sans-serif;
-            font-size: 24px !important;
-            line-height: normal;
-            font-weight: bold;
-            text-shadow: -1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black;
-            pointer-events: none;
-        }
-        .videosubbar span {
-            background-color: rgba(0, 0, 0, 0.25);
-            padding: 0.0625em 0.25em;
-            display: inline-block;
         }
     </style>
     <!-- jhipster-needle-add-resources-to-root - JHipster will add new resources here -->

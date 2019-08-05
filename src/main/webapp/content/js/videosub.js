@@ -108,11 +108,11 @@
         // called on AJAX load onComplete (to work around element reference issues)
         el.update = function(req) {
           el.subtitles = new Array();
-          records = req.split('\n\n');
+          records = req.split(/\n\s*\n/);
           for (var r=0;r<records.length;r++) {
             record = records[r];
             el.subtitles[r] = new Array();
-            el.subtitles[r] = record.split('\n');
+            el.subtitles[r] = record.split('\r');
           }
         }
 
@@ -153,7 +153,13 @@
           var subtitle = '';
           // check if the next subtitle is in the current time range
           if (this.currentTime.toFixed(1) > videosub_timecode_min(el.subtitles[el.subcount][1])  &&  this.currentTime.toFixed(1) < videosub_timecode_max(el.subtitles[el.subcount][1])) {
-            subtitle = el.subtitles[el.subcount][2];
+            if (el.subtitles[el.subcount].length>3) {
+              for(var i=2;i<el.subtitles[el.subcount].length;i++) {
+                subtitle = subtitle + '\n' + el.subtitles[el.subcount][i];
+              }
+            } else {
+              subtitle = el.subtitles[el.subcount][2];
+            }
           }
           // is there a next timecode?
           if (this.currentTime.toFixed(1) > videosub_timecode_max(el.subtitles[el.subcount][1])  && el.subcount < (el.subtitles.length-1)) {

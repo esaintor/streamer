@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit {
   modalRef: NgbModalRef;
   list: any[] = [];
   currentPath = '';
+  savedPath = '';
+  savedName = '';
   steps = [];
 
   constructor(
@@ -60,6 +62,12 @@ export class HomeComponent implements OnInit {
       path = 'parent';
     } else {
       path = path;
+      this.savedPath = '';
+      if (localStorage.getItem(path)) {
+        this.savedPath = localStorage.getItem(path);
+        const values = localStorage.getItem(path).split('/');
+        this.savedName = values[values.length - 1];
+      }
     }
     this.http.get(SERVER_API_URL + '/ftp/list', { params: { path } }).subscribe(response => {
       this.list = JSON.parse(JSON.stringify(response));
@@ -111,5 +119,11 @@ export class HomeComponent implements OnInit {
 
   isVideo(item: string): boolean {
     return item.includes('.mp4') ? true : false;
+  }
+
+  toContinue() {
+    if (this.savedPath && this.savedName) {
+      this.playVideo(this.savedPath, this.savedName);
+    }
   }
 }

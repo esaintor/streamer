@@ -1,7 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SERVER_API_URL } from 'app/app.constants';
 import { HttpClient } from '@angular/common/http';
+import VTTConverter from 'srt-webvtt';
 
 export enum KEY_CODE {
   RIGHT_ARROW = 39,
@@ -18,6 +19,7 @@ export enum KEY_CODE {
 })
 export class StreamComponent implements OnInit {
   path = '';
+  srt = '';
   name = '';
   episodes = [];
 
@@ -74,21 +76,19 @@ export class StreamComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.route.queryParams.subscribe(params => {
-          this.path = params.path;
-          this.getList(params.path);
-          this.name = params.name;
-          const element = document.getElementById('streamer') as HTMLVideoElement;
-          element.src = '/file/d' + this.path;
-          element.play();
-          const _this = this;
-          element.addEventListener('ended', () => {
-            _this.getNext();
-          });
-        });
-      }
+    this.route.queryParams.subscribe(params => {
+      this.path = params.path;
+      this.getList(params.path);
+      this.name = params.name;
+      this.getSubtitle();
+      this.saveToStorage();
+      const element = document.getElementById('streamer') as HTMLVideoElement;
+      element.src = '/file/d' + this.path;
+      element.play();
+      const _this = this;
+      element.addEventListener('ended', () => {
+        _this.getNext();
+      });
     });
   }
 
@@ -131,6 +131,38 @@ export class StreamComponent implements OnInit {
 
   getSubtitle() {
     console.log('/file/d' + this.getPath(this.path) + '/' + this.name.split('.')[0] + '.srt');
-    return '/file/d' + this.getPath(this.path) + '/' + this.name.split('.')[0] + '.srt';
+    this.srt = '/file/d' + this.getPath(this.path) + '/' + this.name.split('.')[0] + '.srt';
+    const video = document.getElementById('streamer') as HTMLVideoElement; // Main video element
+    video.textTracks[0].mode = 'showing'; // Start showing subtitle to your track
+    // this.http.get('/file/d' + this.getPath(this.path) + '/' + this.name.split('.')[0] + '.srt', {responseType: 'blob'}).subscribe(blob => {
+    //   const vttConverter = new VTTConverter(blob); // the constructor accepts a parameer of SRT subtitle blob/file object
+    //   vttConverter
+    //     .getURL()
+    //     .then(function(url) { // Its a valid url that can be used further
+    //       const track = document.getElementById('caption') as HTMLTrackElement; // Track element (which is child of a video element)
+    //       const video = document.getElementById('streamer') as HTMLVideoElement; // Main video element
+    //       track.src = url; // Set the converted URL to track's source
+    //       track.label = 'English';
+    //       track.srclang = 'en';
+    //       track.default = true;
+    //       video.textTracks[0].mode = 'showing'; // Start showing subtitle to your track
+    //     })
+    //     .catch(function(err) {
+    //       console.error(err);
+    //     });
+    // });
+  }
+
+  saveToStorage() {
+    const folder = this.path.split('/')[1];
+    const name = this.path.split('/')[2];
+    const element = document.getElementById('streamer') as HTMLVideoElement;
+    if (localStorage.getItem('/' + folder + '/' + name)) {
+      localStorage.removeItem('/' + folder + '/' + name);
+      localStorage.setItem('/' + folder + '/' + name, this.path);
+    } else {
+      localStorage.setItem('/' + folder + '/' + name, this.path);
+    }
+    localStorage.setItem('currentTime', element.currentTime.toString());
   }
 }
