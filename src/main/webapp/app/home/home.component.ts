@@ -58,6 +58,8 @@ export class HomeComponent implements OnInit {
   }
 
   getList(path?) {
+    this.savedPath = undefined;
+    this.savedName = undefined;
     if (path === undefined) {
       path = 'parent';
     } else {
