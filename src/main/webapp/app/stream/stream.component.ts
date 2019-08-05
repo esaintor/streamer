@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SERVER_API_URL } from 'app/app.constants';
 import { HttpClient } from '@angular/common/http';
 
@@ -74,15 +74,21 @@ export class StreamComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.path = params.path;
-      this.getList(params.path);
-      this.name = params.name;
-      const element = document.getElementById('streamer') as HTMLVideoElement;
-      const _this = this;
-      element.addEventListener('ended', () => {
-        _this.getNext();
-      });
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.route.queryParams.subscribe(params => {
+          this.path = params.path;
+          this.getList(params.path);
+          this.name = params.name;
+          const element = document.getElementById('streamer') as HTMLVideoElement;
+          element.src = '/file/d' + this.path;
+          element.play();
+          const _this = this;
+          element.addEventListener('ended', () => {
+            _this.getNext();
+          });
+        });
+      }
     });
   }
 
@@ -117,9 +123,7 @@ export class StreamComponent implements OnInit {
     if (this.episodes[nextIndex] !== undefined) {
       this.path = path;
       this.name = name;
-      const element = document.getElementById('streamer') as HTMLVideoElement;
-      element.src = '/file/d' + this.path;
-      element.play();
+      this.router.navigate(['/stream'], { queryParams: { path, name } });
     } else {
       this.getBack(this.path);
     }

@@ -26,14 +26,16 @@ export class HomeComponent implements OnInit {
     private accountService: AccountService,
     private loginModalService: LoginModalService,
     private eventManager: JhiEventManager
-  ) {
-    this.getList();
-  }
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      this.currentPath = params.path;
-      this.toSteps(this.currentPath);
+      if (params !== undefined && params.path !== undefined) {
+        this.currentPath = params.path;
+        this.toSteps(this.currentPath);
+      } else {
+        this.getList();
+      }
     });
   }
 
