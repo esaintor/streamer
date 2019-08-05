@@ -130,27 +130,10 @@ export class StreamComponent implements OnInit {
   }
 
   getSubtitle() {
-    console.log('/file/d' + this.getPath(this.path) + '/' + this.name.split('.')[0] + '.srt');
     this.srt = '/file/d' + this.getPath(this.path) + '/' + this.name.split('.')[0] + '.srt';
     const video = document.getElementById('streamer') as HTMLVideoElement; // Main video element
     video.textTracks[0].mode = 'showing'; // Start showing subtitle to your track
-    // this.http.get('/file/d' + this.getPath(this.path) + '/' + this.name.split('.')[0] + '.srt', {responseType: 'blob'}).subscribe(blob => {
-    //   const vttConverter = new VTTConverter(blob); // the constructor accepts a parameer of SRT subtitle blob/file object
-    //   vttConverter
-    //     .getURL()
-    //     .then(function(url) { // Its a valid url that can be used further
-    //       const track = document.getElementById('caption') as HTMLTrackElement; // Track element (which is child of a video element)
-    //       const video = document.getElementById('streamer') as HTMLVideoElement; // Main video element
-    //       track.src = url; // Set the converted URL to track's source
-    //       track.label = 'English';
-    //       track.srclang = 'en';
-    //       track.default = true;
-    //       video.textTracks[0].mode = 'showing'; // Start showing subtitle to your track
-    //     })
-    //     .catch(function(err) {
-    //       console.error(err);
-    //     });
-    // });
+    video.play();
   }
 
   saveToStorage() {
