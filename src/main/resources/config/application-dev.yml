@@ -36,9 +36,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://remotemysql.com:3306/5I7FOXYlMF?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: 5I7FOXYlMF
-    password: ORmfsIUOHY
+    url: jdbc:mysql://stream.c0oyxmi5szhv.ap-southeast-1.rds.amazonaws.com:3306/streamdb?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: streamuser
+    password: streamer
     hikari:
       poolName: Hikari
       auto-commit: false
