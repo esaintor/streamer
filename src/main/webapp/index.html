@@ -45,6 +45,21 @@
             cursor: pointer;
         }
 
+        input.form-control  {
+            background-color: #2d2d2d !important;
+            border: 1px solid #2d2d2d !important;
+            color: white !important;
+        }
+
+        *:focus {
+            outline: none;
+        }
+
+        .modal-content {
+            border: 1px solid gray !important;
+            border-radius: 5px !important;
+        }
+
         .streamer-icon {
             display: inline-block;
             position: relative;
@@ -95,7 +110,7 @@
     </style>
     <!-- jhipster-needle-add-resources-to-root - JHipster will add new resources here -->
 </head>
-<body>
+<body style="height: 100%;" onresize="onResize()">
     <!--[if lt IE 9]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -163,6 +178,14 @@
             if (errorElm && errorElm.style) {
                 errorElm.style.display = "block";
             }
+        }
+    </script>
+    <script>
+        function onResize() {
+            console.log('resizine');
+            console.log(window.innerHeight - 84);
+            var video = document.getElementById("streamer");
+            video.setAttribute('height', window.innerHeight - 84);
         }
     </script>
     <!-- uncomment this for adding service worker

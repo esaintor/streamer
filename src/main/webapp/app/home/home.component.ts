@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   account: Account;
   modalRef: NgbModalRef;
   list: any[] = [];
+  history: any[] = [];
   currentPath = '';
   savedPath = '';
   savedName = '';
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getHistory();
     this.route.queryParams.subscribe(params => {
       if (params !== undefined && params.path !== undefined) {
         this.currentPath = params.path;
@@ -39,6 +41,15 @@ export class HomeComponent implements OnInit {
         this.getList();
       }
     });
+  }
+
+  getHistory() {
+    if (localStorage.getItem('username')) {
+      const username = localStorage.getItem('username');
+      this.http.get(SERVER_API_URL + '/ftp/history', { params: { username } }).subscribe(response => {
+        this.history = JSON.parse(JSON.stringify(response));
+      });
+    }
   }
 
   registerAuthenticationSuccess() {
@@ -127,5 +138,9 @@ export class HomeComponent implements OnInit {
     if (this.savedPath && this.savedName) {
       this.playVideo(this.savedPath, this.savedName);
     }
+  }
+
+  isGuest() {
+    return localStorage.getItem('username') === null ? true : false;
   }
 }

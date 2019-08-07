@@ -6,6 +6,8 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginService } from 'app/core/login/login.service';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
+import { HttpClient } from '@angular/common/http';
+import { SERVER_API_URL } from 'app/app.constants';
 
 @Component({
   selector: 'app-login-modal',
@@ -28,7 +30,8 @@ export class AppLoginModalComponent implements AfterViewInit {
     private renderer: Renderer,
     private router: Router,
     public activeModal: NgbActiveModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private http: HttpClient
   ) {}
 
   ngAfterViewInit() {
@@ -42,6 +45,33 @@ export class AppLoginModalComponent implements AfterViewInit {
       password: ''
     });
     this.activeModal.dismiss('cancel');
+  }
+
+  attempt() {
+    this.authenticationError = false;
+    const username = this.loginForm.get('username').value;
+    const password = this.loginForm.get('password').value;
+    this.http.post(SERVER_API_URL + '/ftp/login', {}, { params: { username, password } }).subscribe(
+      (response: any) => {
+        if (response.status === 200) {
+          localStorage.setItem('username', response.error.text);
+          this.authenticationError = false;
+          this.activeModal.dismiss('cancel');
+        } else {
+          this.authenticationError = true;
+        }
+      },
+      error => {
+        if (error.status === 200) {
+          localStorage.setItem('username', error.error.text);
+          this.authenticationError = false;
+          this.activeModal.dismiss('cancel');
+          location.reload();
+        } else {
+          this.authenticationError = true;
+        }
+      }
+    );
   }
 
   login() {

@@ -21,6 +21,7 @@ export class StreamComponent implements OnInit {
   path = '';
   srt = '';
   name = '';
+  playerHeight = window.innerHeight - 96;
   episodes = [];
 
   @HostListener('window:keyup', ['$event'])
@@ -80,7 +81,7 @@ export class StreamComponent implements OnInit {
       this.path = params.path;
       this.getList(params.path);
       this.name = params.name;
-      this.getSubtitle();
+      // this.getSubtitle();
       this.saveToStorage();
       const element = document.getElementById('streamer') as HTMLVideoElement;
       element.src = '/file/d' + this.path;
@@ -137,15 +138,33 @@ export class StreamComponent implements OnInit {
   }
 
   saveToStorage() {
-    const folder = this.path.split('/')[1];
-    const name = this.path.split('/')[2];
-    const element = document.getElementById('streamer') as HTMLVideoElement;
-    if (localStorage.getItem('/' + folder + '/' + name)) {
-      localStorage.removeItem('/' + folder + '/' + name);
-      localStorage.setItem('/' + folder + '/' + name, this.path);
-    } else {
-      localStorage.setItem('/' + folder + '/' + name, this.path);
+    // const element = document.getElementById('streamer') as HTMLVideoElement;
+    // if (localStorage.getItem('/' + folder + '/' + name)) {
+    //   localStorage.removeItem('/' + folder + '/' + name);
+    //   localStorage.setItem('/' + folder + '/' + name, this.path);
+    // } else {
+    //   localStorage.setItem('/' + folder + '/' + name, this.path);
+    // }
+    // localStorage.setItem('currentTime', element.currentTime.toString());
+    const path = this.path;
+    const username = localStorage.getItem('username');
+    const parent = '/' + this.path.split('/')[1] + '/' + this.path.split('/')[2];
+    if (username) {
+      this.http
+        .post(
+          SERVER_API_URL + '/ftp/save',
+          {},
+          {
+            params: {
+              path,
+              parent,
+              username
+            }
+          }
+        )
+        .subscribe((response: any) => {
+          console.log(response);
+        });
     }
-    localStorage.setItem('currentTime', element.currentTime.toString());
   }
 }
