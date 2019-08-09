@@ -108,9 +108,10 @@ public class FtpController {
         String[] steps = path.split(Pattern.quote("/"));
         History saved = null;
         if (history.isPresent()) {
-            history.get().setEpisode(steps[steps.length - 1]);
-            history.get().setPath(path);
-            saved = history.get();
+            History found = history.get();
+            found.setEpisode(steps[steps.length - 1]);
+            found.setPath(path);
+            saved = historyRepository.save(found);
         } else {
             History created = new History();
             created.setPath(path);

@@ -23,6 +23,7 @@ export class StreamComponent implements OnInit {
   name = '';
   playerHeight = window.innerHeight - 96;
   episodes = [];
+  count = 0;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -41,7 +42,7 @@ export class StreamComponent implements OnInit {
     }
 
     if (event.keyCode === KEY_CODE.NEXT_PLAY) {
-      this.getNext();
+      this.getNext(false);
     }
 
     if (event.keyCode === KEY_CODE.FULL_BUTTON) {
@@ -77,18 +78,18 @@ export class StreamComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.count = 0;
     this.route.queryParams.subscribe(params => {
       this.path = params.path;
       this.getList(params.path);
       this.name = params.name;
-      // this.getSubtitle();
       this.saveToStorage();
       const element = document.getElementById('streamer') as HTMLVideoElement;
       element.src = '/file/d' + this.path;
       element.play();
       const _this = this;
       element.addEventListener('ended', () => {
-        _this.getNext();
+        _this.getNext(true);
       });
     });
   }
@@ -116,36 +117,30 @@ export class StreamComponent implements OnInit {
     return path;
   }
 
-  getNext() {
-    const currentIndex = this.episodes.indexOf(this.name);
-    const nextIndex = currentIndex + 1;
-    const path = this.getPath(this.path) + '/' + this.episodes[nextIndex];
-    const name = this.episodes[nextIndex];
-    if (this.episodes[nextIndex] !== undefined) {
-      this.path = path;
-      this.name = name;
-      this.router.navigate(['/stream'], { queryParams: { path, name } });
+  getNext(auto) {
+    if (auto) {
+      this.count = this.count + 1;
+    } else {
+      this.count = 0;
+    }
+    if (this.count < 3) {
+      const currentIndex = this.episodes.indexOf(this.name);
+      const nextIndex = currentIndex + 1;
+      const path = this.getPath(this.path) + '/' + this.episodes[nextIndex];
+      const name = this.episodes[nextIndex];
+      if (this.episodes[nextIndex] !== undefined) {
+        this.path = path;
+        this.name = name;
+        this.router.navigate(['/stream'], { queryParams: { path, name } });
+      } else {
+        this.getBack(this.path);
+      }
     } else {
       this.getBack(this.path);
     }
   }
 
-  getSubtitle() {
-    this.srt = '/file/d' + this.getPath(this.path) + '/' + this.name.split('.')[0] + '.srt';
-    // const video = document.getElementById('streamer') as HTMLVideoElement; // Main video element
-    // video.textTracks[0].mode = 'showing'; // Start showing subtitle to your track
-    // video.play();
-  }
-
   saveToStorage() {
-    // const element = document.getElementById('streamer') as HTMLVideoElement;
-    // if (localStorage.getItem('/' + folder + '/' + name)) {
-    //   localStorage.removeItem('/' + folder + '/' + name);
-    //   localStorage.setItem('/' + folder + '/' + name, this.path);
-    // } else {
-    //   localStorage.setItem('/' + folder + '/' + name, this.path);
-    // }
-    // localStorage.setItem('currentTime', element.currentTime.toString());
     const path = this.path;
     const username = localStorage.getItem('username');
     const parent = '/' + this.path.split('/')[1] + '/' + this.path.split('/')[2];
