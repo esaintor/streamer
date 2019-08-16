@@ -23,6 +23,8 @@ public class History {
 
     private String episode;
 
+    private Double current;
+
     public Long getId() {
         return id;
     }
@@ -61,5 +63,13 @@ public class History {
 
     public void setEpisode(String episode) {
         this.episode = episode;
+    }
+
+    public Double getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Double current) {
+        this.current = current;
     }
 }

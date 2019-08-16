@@ -7,19 +7,13 @@ import mn.itzone.repository.HistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sql.DataSource;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @RestController
@@ -103,7 +97,7 @@ public class FtpController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<History> save(@RequestParam String path, @RequestParam String parent, @RequestParam String username) {
+    public ResponseEntity<History> save(@RequestParam String path, @RequestParam String parent, @RequestParam String username, @RequestParam Double current) {
         Optional<History> history = historyRepository.findByUsernameAndParent(username, parent);
         String[] steps = path.split(Pattern.quote("/"));
         History saved = null;
@@ -111,6 +105,7 @@ public class FtpController {
             History found = history.get();
             found.setEpisode(steps[steps.length - 1]);
             found.setPath(path);
+            found.setCurrent(current);
             saved = historyRepository.save(found);
         } else {
             History created = new History();
@@ -118,6 +113,7 @@ public class FtpController {
             created.setEpisode(steps[steps.length - 1]);
             created.setUsername(username);
             created.setParent(parent);
+            created.setCurrent(current);
             saved = historyRepository.save(created);
         }
         return ResponseEntity.ok(saved);

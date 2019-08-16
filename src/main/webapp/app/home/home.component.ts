@@ -97,14 +97,14 @@ export class HomeComponent implements OnInit {
     this.steps.push(item);
     this.buildPath();
     if (item.includes('.mp4') || item.includes('.mkv')) {
-      this.playVideo(this.currentPath, item);
+      this.playVideo(this.currentPath, item, 0);
     } else {
       this.getList(this.currentPath);
     }
   }
 
-  playVideo(path, name) {
-    this.router.navigate(['stream'], { queryParams: { path, name } });
+  playVideo(path, name, current) {
+    this.router.navigate(['stream'], { queryParams: { path, name, current } });
   }
 
   buildPath() {
@@ -132,12 +132,6 @@ export class HomeComponent implements OnInit {
 
   isVideo(item: string): boolean {
     return item.includes('.mp4') ? true : false;
-  }
-
-  toContinue() {
-    if (this.savedPath && this.savedName) {
-      this.playVideo(this.savedPath, this.savedName);
-    }
   }
 
   isGuest() {

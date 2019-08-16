@@ -24,6 +24,7 @@ export class StreamComponent implements OnInit {
   playerHeight = window.innerHeight - 96;
   episodes = [];
   count = 0;
+  current = 0;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -79,19 +80,35 @@ export class StreamComponent implements OnInit {
 
   ngOnInit(): void {
     this.count = 0;
+    const _this = this;
     this.route.queryParams.subscribe(params => {
       this.path = params.path;
       this.getList(params.path);
       this.name = params.name;
+      this.current = params.current;
       this.saveToStorage();
       const element = document.getElementById('streamer') as HTMLVideoElement;
       element.src = '/file/d' + this.path;
       element.play();
-      const _this = this;
+      // element.pause();
+      // element.addEventListener('loadedmetadata', function() {
+      //   this.currentTime = _this.current;
+      //   const timer = setInterval(function() {
+      //     if (element.paused && element.readyState === 4 || !element.paused) {
+      //       element.play();
+      //       clearInterval(timer);
+      //     }
+      //   }, 50);
+      // }, false);
       element.addEventListener('ended', () => {
         _this.getNext(true);
       });
     });
+    // setInterval(() => {
+    //   const element = document.getElementById('streamer') as HTMLVideoElement;
+    //   _this.current = element.currentTime;
+    //   _this.saveToStorage();
+    // }, 300000);
   }
 
   getBack(currentPath) {
@@ -144,6 +161,7 @@ export class StreamComponent implements OnInit {
     const path = this.path;
     const username = localStorage.getItem('username');
     const parent = '/' + this.path.split('/')[1] + '/' + this.path.split('/')[2];
+    const current = this.current.toString();
     if (username) {
       this.http
         .post(
@@ -153,7 +171,8 @@ export class StreamComponent implements OnInit {
             params: {
               path,
               parent,
-              username
+              username,
+              current
             }
           }
         )

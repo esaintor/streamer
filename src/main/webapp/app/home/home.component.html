@@ -2,7 +2,7 @@
     <div class="header-path">{{currentPath}}</div>
     <ul class="server-path">
         <li *ngIf="isGuest()" (click)="login()">Login by username</li>
-        <li *ngFor="let hist of history" (click)="playVideo(hist.path, hist.episode)">Үргэлжлүүлэх: {{hist.episode}}</li>
+        <li *ngFor="let hist of history" (click)="playVideo(hist.path, hist.episode, hist.current)">Үргэлжлүүлэх: {{hist.episode}}</li>
         <li *ngIf="steps.length > 0"><a (click)="getBackPath()">back</a></li>
 <!--        <li *ngIf="savedName" (click)="toContinue()">Үргэлжлүүлэх <strong style="font-weight: 700">{{savedName}}</strong></li>-->
         <li *ngFor="let item of list"><a (click)="getForwardPath(item)"><span class="streamer-icon video-icon" *ngIf="isVideo(item)"></span>{{item}}</a></li>
