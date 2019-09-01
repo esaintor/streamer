@@ -80,39 +80,32 @@ export class StreamComponent implements OnInit {
 
   ngOnInit(): void {
     this.count = 0;
-    const _this = this;
     this.route.queryParams.subscribe(params => {
       this.path = params.path;
       this.getList(params.path);
       this.name = params.name;
       this.current = params.current;
       this.saveToStorage();
-      const element = document.getElementById('streamer') as HTMLVideoElement;
-      element.src = '/file/d' + this.path;
-      element.play();
-      // element.pause();
-      // element.addEventListener('loadedmetadata', function() {
-      //   this.currentTime = _this.current;
-      //   const timer = setInterval(function() {
-      //     if (element.paused && element.readyState === 4 || !element.paused) {
-      //       element.play();
-      //       clearInterval(timer);
-      //     }
-      //   }, 50);
-      // }, false);
-      element.addEventListener('ended', () => {
-        _this.getNext(true);
-      });
+      this.playIt(this.path);
     });
-    // setInterval(() => {
-    //   const element = document.getElementById('streamer') as HTMLVideoElement;
-    //   _this.current = element.currentTime;
-    //   _this.saveToStorage();
-    // }, 300000);
+  }
+
+  playIt(path) {
+    const _this = this;
+    const element = document.getElementById('streamer') as HTMLVideoElement;
+    element.src = SERVER_API_URL + '/file/d' + path;
+    element.play();
+    element.addEventListener('ended', () => {
+      _this.getNext(true);
+    });
   }
 
   getBack(currentPath) {
     const path = this.getPath(currentPath);
+    const element = document.getElementById('streamer') as HTMLVideoElement;
+    element.src = '';
+    this.current = element.currentTime;
+    this.saveToStorage();
     this.router.navigate(['/'], { queryParams: { path } });
   }
 
@@ -148,7 +141,8 @@ export class StreamComponent implements OnInit {
       if (this.episodes[nextIndex] !== undefined) {
         this.path = path;
         this.name = name;
-        this.router.navigate(['/stream'], { queryParams: { path, name } });
+        // this.router.navigate(['/stream'], { queryParams: { path, name } });
+        this.playIt(this.path);
       } else {
         this.getBack(this.path);
       }
